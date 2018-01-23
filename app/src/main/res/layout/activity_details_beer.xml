@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/detailsBeerNameLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/beer_name_label"
+        android:textColor="@android:color/black"/>
+
+    <EditText
+        android:id="@+id/detailsBeerNameValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/beer_name_hint"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:inputType="text"/>
+
+    <TextView
+        android:id="@+id/detailsBeerPercentageLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/alcohol_percentage_label"
+        android:textColor="@android:color/black"/>
+
+    <EditText
+        android:id="@+id/detailsBeerPercentageValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:hint="@string/alcohol_percentage_hint"
+        android:inputType="numberDecimal"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/detailsBeerImageLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/beer_image_label"
+        android:textColor="@android:color/black"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/detailsBeerImage"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_modify"
+        android:id="@+id/detailsModifyBeerButton"/>
+
+</LinearLayout>
