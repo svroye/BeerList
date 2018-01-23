@@ -20,8 +20,8 @@ import com.example.steven.bierlijst.data.BeerListContract;
 import com.example.steven.bierlijst.data.BeerListDbHelper;
 
 public class MainActivity extends AppCompatActivity
-        implements BeerListAdapter.ListItemClickListener {
-
+        implements BeerListAdapter.ListItemClickListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
 
     public static final String TAG = "MainActivity";
@@ -35,6 +35,18 @@ public class MainActivity extends AppCompatActivity
     // database instance for populating the recyclerview
     SQLiteDatabase mDb;
 
+    public static final int BEER_LOADER_ID = 14589;
+
+    public static final String[] MAIN_PROJECTION = {
+            BeerListContract.BeerListEntry.COLUMN_NAME,
+            BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE,
+            BeerListContract.BeerListEntry.COLUMN_IMAGE_ID
+    };
+
+    public static final int INDEX_NAME = 0;
+    public static final int INDEX_ALCOHOL_PERCENTAGE = 1;
+    public static final int INDEX_IMAGE_ID = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,25 +55,18 @@ public class MainActivity extends AppCompatActivity
         BeerListDbHelper dbHelper = new BeerListDbHelper(this);
         mDb = dbHelper.getWritableDatabase();
 
-
-
         // find a reference to the recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewBeerList);
 
-        Cursor cursor = getBeerList();
-
-
         // create a new adapter, passing in the cursor holding the database entries
         LinearLayoutManager manager = new LinearLayoutManager(this);
-
 
         // create layout manager and attach it to the recyclerview
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new BeerListAdapter(this, this, cursor);
+        mAdapter = new BeerListAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +78,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        getSupportLoaderManager().initLoader(BEER_LOADER_ID, null, this);
     }
 
     /*
@@ -99,21 +105,32 @@ public class MainActivity extends AppCompatActivity
     }
     */
 
-    private Cursor getBeerList(){
-        return mDb.query(BeerListContract.BeerListEntry.TABLE_NAME,
-                null, null, null, null, null, BeerListContract.BeerListEntry.COLUMN_NAME);
-    }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        mAdapter.swapCursor(getBeerList());
-//    }
-
     @Override
     public void onListItemClick(int clickedItemIndex) {
         Intent intentToDetailsActivity = new Intent(this, DetailsBeerActivity.class);
         startActivity(intentToDetailsActivity);
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id){
+            case BEER_LOADER_ID:
+                Uri uri = BeerListContract.BeerListEntry.CONTENT_URI;
+                String sortOrder = BeerListContract.BeerListEntry.COLUMN_NAME + " ASC";
+                return new CursorLoader(this, uri, MAIN_PROJECTION, null, null, sortOrder);
+            default:
+                throw new RuntimeException("Loader not implemented!");
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mAdapter.swapCursor(data);
+        Log.d(TAG, "Swapping cursor !!!!!");
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
+    }
 }

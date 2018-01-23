@@ -34,11 +34,9 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerVi
     /*
     Constructor for the BeerListAdapter
      */
-    public BeerListAdapter(Context context, ListItemClickListener listItemClickListener, Cursor cursor){
+    public BeerListAdapter(Context context, ListItemClickListener listItemClickListener){
         mContext = context;
         mListItemClickListener = listItemClickListener;
-        //mCursor = context.getContentResolver().query(BeerListContract.BeerListEntry.CONTENT_URI , null, "_id=?", new String[]{"1"}, null);
-        mCursor = context.getContentResolver().query(BeerListContract.BeerListEntry.CONTENT_URI , null, null, null, null);
     }
 
     @Override
@@ -69,15 +67,15 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerVi
         return 0;
     }
 
-//    public void swapCursor(Cursor newCursor) {
-//        // Always close the previous mCursor first
-//        if (mCursor != null) mCursor.close();
-//        mCursor = newCursor;
-//        if (newCursor != null) {
-//            // Force the RecyclerView to refresh
-//            this.notifyDataSetChanged();
-//        }
-//    }
+    public void swapCursor(Cursor newCursor) {
+        // Always close the previous mCursor first
+        if (mCursor != null) mCursor.close();
+        mCursor = newCursor;
+        if (newCursor != null) {
+            // Force the RecyclerView to refresh
+            this.notifyDataSetChanged();
+        }
+    }
 
     public class BeerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
 

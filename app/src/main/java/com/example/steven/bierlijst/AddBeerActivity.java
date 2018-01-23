@@ -32,11 +32,8 @@ public class AddBeerActivity extends AppCompatActivity {
     Button mCameraButton;
     ImageView mBeerImageView;
 
-    SQLiteDatabase mDb;
-
     // integer request code for the image capturing with an intent
     static final int REQUEST_IMAGE_CAPTURE = 1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
