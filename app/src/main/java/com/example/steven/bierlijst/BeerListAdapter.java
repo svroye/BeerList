@@ -31,14 +31,14 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerVi
         void onListItemClick(int clickedItemIndex);
     }
 
-    int NUM_TOT;
     /*
     Constructor for the BeerListAdapter
      */
     public BeerListAdapter(Context context, ListItemClickListener listItemClickListener, Cursor cursor){
         mContext = context;
         mListItemClickListener = listItemClickListener;
-        mCursor = cursor;
+        //mCursor = context.getContentResolver().query(BeerListContract.BeerListEntry.CONTENT_URI , null, "_id=?", new String[]{"1"}, null);
+        mCursor = context.getContentResolver().query(BeerListContract.BeerListEntry.CONTENT_URI , null, null, null, null);
     }
 
     @Override

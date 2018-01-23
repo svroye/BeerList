@@ -38,7 +38,6 @@ public class BeerProvider extends ContentProvider {
         UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(BeerListContract.AUTHORITY, BeerListContract.PATH_BEERS, BEERS);
         matcher.addURI(BeerListContract.AUTHORITY, BeerListContract.PATH_BEERS + "/#", BEERS_WITH_ID);
-
         return matcher;
     }
 
@@ -63,15 +62,14 @@ public class BeerProvider extends ContentProvider {
         switch (match){
             // return all the beers
             case BEERS:
-                Log.d(TAG, "Querying all beers");
                 returnCursor = db.query(BeerListContract.BeerListEntry.TABLE_NAME,
-                        projection, selection, selectionArgs, null, null, sortOrder);
+                        projection, selection, selectionArgs, null, null, null);
                 break;
             // return the beer with a certain id
             case BEERS_WITH_ID:
                 // retrieve the id from the uri
                 String id = uri.getPathSegments().get(1);
-                Log.d(TAG, "Querying the beer with id " + id);
+
                 // set up the selection and selectionArg for the SQL query
                 String mSelection = "_id=?";
                 String[] mSelectionArgs = new String[] {id};
@@ -83,7 +81,7 @@ public class BeerProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        Log.d(TAG, "Cursor count " + returnCursor.getCount());
+        //Log.d(TAG, "Cursor count " + returnCursor.getCount());
         returnCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return returnCursor;
     }

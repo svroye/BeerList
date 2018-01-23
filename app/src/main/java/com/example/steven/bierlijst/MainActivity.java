@@ -55,9 +55,7 @@ public class MainActivity extends AppCompatActivity
         LinearLayoutManager manager = new LinearLayoutManager(this);
 
 
-
         // create layout manager and attach it to the recyclerview
-
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setHasFixedSize(true);
 
