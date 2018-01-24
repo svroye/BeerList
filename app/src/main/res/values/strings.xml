@@ -14,4 +14,8 @@
     <string name="button_confirm" translatable="true">Bevestigen</string>
     <string name="button_modify" translatable="true">Wijzigen</string>
 
+    <string name="menu_item_delete" translatable="true">Verwijderen</string>
+    <string name="recycler_view_empty_state" translatable="true">Je hebt nog geen bieren toegevoegd.
+        Klik onderaan de pagina op de knop om je eerste bier toe te voegen</string>
+
 </resources>

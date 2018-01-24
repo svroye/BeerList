@@ -99,11 +99,8 @@ public class AddBeerActivity extends AppCompatActivity {
 
         ContentResolver resolver = getContentResolver();
 
-        Uri returnUri = resolver.insert(BeerListContract.BeerListEntry.CONTENT_URI, contentValues);
+        resolver.insert(BeerListContract.BeerListEntry.CONTENT_URI, contentValues);
 
-        if (returnUri != null) {
-            Toast.makeText(getApplicationContext(), "" + returnUri, Toast.LENGTH_LONG).show();
-        }
         finish();
     }
 

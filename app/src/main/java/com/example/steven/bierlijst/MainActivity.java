@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.steven.bierlijst.data.BeerListContract;
@@ -35,22 +36,25 @@ public class MainActivity extends AppCompatActivity
     // database instance for populating the recyclerview
     SQLiteDatabase mDb;
 
+    TextView emptyStateTextView;
+
     public static final int BEER_LOADER_ID = 14589;
 
     public static final String[] MAIN_PROJECTION = {
+            BeerListContract.BeerListEntry._ID,
             BeerListContract.BeerListEntry.COLUMN_NAME,
-            BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE,
-            BeerListContract.BeerListEntry.COLUMN_IMAGE_ID
     };
 
-    public static final int INDEX_NAME = 0;
-    public static final int INDEX_ALCOHOL_PERCENTAGE = 1;
-    public static final int INDEX_IMAGE_ID = 2;
+    public static final int INDEX_ID = 0;
+    public static final int INDEX_NAME = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        emptyStateTextView = (TextView) findViewById(R.id.recyclerViewEmptyState);
 
         BeerListDbHelper dbHelper = new BeerListDbHelper(this);
         mDb = dbHelper.getWritableDatabase();
@@ -105,9 +109,13 @@ public class MainActivity extends AppCompatActivity
     }
     */
 
+
+
     @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public void onListItemClick(int clickedItemId) {
         Intent intentToDetailsActivity = new Intent(this, DetailsBeerActivity.class);
+        Uri uriWithId = BeerListContract.BeerListEntry.getUriWithAppendedId(clickedItemId);
+        intentToDetailsActivity.setData(uriWithId);
         startActivity(intentToDetailsActivity);
     }
 
@@ -119,18 +127,19 @@ public class MainActivity extends AppCompatActivity
                 String sortOrder = BeerListContract.BeerListEntry.COLUMN_NAME + " ASC";
                 return new CursorLoader(this, uri, MAIN_PROJECTION, null, null, sortOrder);
             default:
-                throw new RuntimeException("Loader not implemented!");
+                throw new RuntimeException("Loader not implemented: " + BEER_LOADER_ID);
         }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
-        Log.d(TAG, "Swapping cursor !!!!!");
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
     }
+
+
 }

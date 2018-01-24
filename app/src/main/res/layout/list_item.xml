@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Westmalle Tripel"
-        android:id="@+id/textViewBeerName"
-        android:background="@android:color/darker_gray"/>
+        android:id="@+id/textViewBeerName"/>
 
     <View
         android:layout_width="match_parent"

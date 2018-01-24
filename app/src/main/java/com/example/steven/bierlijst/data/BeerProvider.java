@@ -63,7 +63,7 @@ public class BeerProvider extends ContentProvider {
             // return all the beers
             case BEERS:
                 returnCursor = db.query(BeerListContract.BeerListEntry.TABLE_NAME,
-                        projection, selection, selectionArgs, null, null, null);
+                        projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             // return the beer with a certain id
             case BEERS_WITH_ID:
@@ -123,7 +123,24 @@ public class BeerProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+
+        int numberOfRowsDeleted = 0;
+
+        switch (match){
+            case BEERS_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                numberOfRowsDeleted = db.delete(BeerListContract.BeerListEntry.TABLE_NAME, "_id=?", new String[] {id} );
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown URI: " + uri);
+        }
+        if (numberOfRowsDeleted != 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return numberOfRowsDeleted;
     }
 
     @Override

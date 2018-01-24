@@ -28,7 +28,7 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerVi
     ListItemClickListener mListItemClickListener;
 
     public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+        void onListItemClick(int clickedItemId);
     }
 
     /*
@@ -80,6 +80,7 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerVi
     public class BeerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
 
         TextView mBeerNameTextView;
+        int id;
 
         public BeerViewHolder(View itemView) {
             super(itemView);
@@ -93,7 +94,10 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerVi
 
         @Override
         public void onClick(View view) {
-            mListItemClickListener.onListItemClick(getAdapterPosition());
+            int position = getAdapterPosition();
+            mCursor.moveToPosition(position);
+            int clickedItemId = mCursor.getInt(mCursor.getColumnIndex(BeerListContract.BeerListEntry._ID));
+            mListItemClickListener.onListItemClick(clickedItemId);
         }
     }
 
