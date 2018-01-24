@@ -3,11 +3,13 @@ package com.example.steven.bierlijst;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -40,6 +42,9 @@ public class AddBeerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_beer);
 
+        Intent intentThatStartedThisActivity = getIntent();
+        Uri uri = intentThatStartedThisActivity.getData();
+
         // instantiate the view variables
         mAddBeerButton = (Button) findViewById(R.id.addBeerConfirmButton);
         mNameEditText = (EditText) findViewById(R.id.beerNameValue);
@@ -47,6 +52,10 @@ public class AddBeerActivity extends AppCompatActivity {
         mGalleryButton = (Button) findViewById(R.id.galleryButton);
         mCameraButton = (Button) findViewById(R.id.cameraButton);
         mBeerImageView = (ImageView) findViewById(R.id.beerImage);
+
+        if (uri != null){
+            setTitle(getString(R.string.modify_beer_activity_label));
+        }
 
         // add a click listener to the confirm button, such that a new entry can be made in the DB
         mAddBeerButton.setOnClickListener(new View.OnClickListener() {
@@ -126,4 +135,6 @@ public class AddBeerActivity extends AppCompatActivity {
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
+
 }

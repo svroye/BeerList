@@ -53,10 +53,5 @@
         android:layout_weight="1"
         android:id="@+id/detailsBeerImage"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button_modify"
-        android:id="@+id/detailsModifyBeerButton"/>
 
 </LinearLayout>

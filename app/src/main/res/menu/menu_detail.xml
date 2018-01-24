@@ -3,8 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_item_modify_beer"
+        android:title="@string/menu_item_modify"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:orderInCategory="1"/>
+
+    <item
         android:id="@+id/menu_item_delete_beer"
         android:title="@string/menu_item_delete"
         app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_delete"/>
+        android:icon="@android:drawable/ic_menu_delete"
+        android:orderInCategory="2"/>
+
+
 </menu>

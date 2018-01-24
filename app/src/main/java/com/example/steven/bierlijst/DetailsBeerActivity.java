@@ -1,10 +1,14 @@
 package com.example.steven.bierlijst;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -98,11 +102,43 @@ public class DetailsBeerActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.menu_item_delete_beer){
-            Uri uri = BeerListContract.BeerListEntry.getUriWithAppendedId(rowId);
-            getContentResolver().delete(uri, null, null);
-            finish();
+        switch (id){
+            case R.id.menu_item_delete_beer:
+                showDialog();
+                break;
+            case R.id.menu_item_modify_beer:
+                Uri uri = BeerListContract.BeerListEntry.getUriWithAppendedId(rowId);
+                Intent intentToStartModifyBeer = new Intent(this, AddBeerActivity.class);
+                intentToStartModifyBeer.setData(uri);
+                startActivity(intentToStartModifyBeer);
+                break;
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    /*
+    creates a Dialog message for the user to make sure that he wants to delete this entry
+    */
+    public void showDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dialog_delete_title))
+                .setMessage(getString(R.string.dialog_delete_content));
+        builder.setPositiveButton(getString(R.string.dialog_delete_confirm_button), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Uri uri = BeerListContract.BeerListEntry.getUriWithAppendedId(rowId);
+                getContentResolver().delete(uri, null, null);
+                finish();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.dialog_delete_ignore_button), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // do nothing, the system dismisses the dialog for us
+            }
+        });
+
+        builder.create().show();
     }
 }

@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="add_beer_activity_label">Toevoegen</string>
     <string name= "details_beer_activity_label">Details</string>
+    <string name="modify_beer_activity_label">Modify</string>
 
     <string name="beer_name_label" translatable="true">Naam:</string>
     <string name="beer_name_hint" translatable="false">Westmalle Tripel</string>
@@ -14,8 +15,17 @@
     <string name="button_confirm" translatable="true">Bevestigen</string>
     <string name="button_modify" translatable="true">Wijzigen</string>
 
+    <!-- strings for the menu items in the details beer screen-->
     <string name="menu_item_delete" translatable="true">Verwijderen</string>
+    <string name="menu_item_modify" translatable="true">Wijzigen</string>
+
     <string name="recycler_view_empty_state" translatable="true">Je hebt nog geen bieren toegevoegd.
         Klik onderaan de pagina op de knop om je eerste bier toe te voegen</string>
+
+    <!-- strings for the dialog on the details beer screen -->
+    <string name="dialog_delete_title" translatable="true">Verwijderen</string>
+    <string name="dialog_delete_content" translatable="true">Ben je zeker dat je dit bier wilt verwijderen?</string>
+    <string name="dialog_delete_confirm_button" translatable="true">Ja</string>
+    <string name="dialog_delete_ignore_button" translatable="true">Nee</string>
 
 </resources>
