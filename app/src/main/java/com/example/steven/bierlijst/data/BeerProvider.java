@@ -146,7 +146,26 @@ public class BeerProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s,
                       @Nullable String[] strings) {
-        return 0;
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int updatedRows;
+
+        switch (match){
+            case BEERS_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                String selection = "_id=?";
+                String[] selArgs = new String[] {id};
+                updatedRows = db.update(BeerListContract.BeerListEntry.TABLE_NAME, contentValues,
+                        selection, selArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown URI: " + uri);
+        }
+        if (updatedRows > 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return updatedRows;
     }
 
 }

@@ -11,6 +11,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import com.example.steven.bierlijst.data.BeerListContract;
 public class DetailsBeerActivity extends AppCompatActivity
                 implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final String TAG = "DetailsBeerActivity";
     // stores the uri coming from the clicked list item in the MainActivity
     Uri uriFromIntent;
 
@@ -81,11 +83,16 @@ public class DetailsBeerActivity extends AppCompatActivity
         beerNameTextView.setText(name);
 
         // get the alcohol percentage from the beer and display it on the TextView
-        double alcoholPercentage = data.getInt(INDEX_ALCOHOL_PERCENTAGE);
+        double alcoholPercentage = data.getDouble(INDEX_ALCOHOL_PERCENTAGE);
         beerAlcoholPercentage.setText(Double.toString(alcoholPercentage));
 
-        rowId = data.getInt(INDEX_ID);
+        // get the uri from the image. If it's null, no image was added and nothing needs to be done
+        String stringUriFromImage = data.getString(INDEX_IMAGE_ID);
+        if(stringUriFromImage != null){
+            beerImage.setImageURI(Uri.parse(stringUriFromImage));
+        }
 
+        rowId = data.getInt(INDEX_ID);
     }
 
     @Override
