@@ -28,7 +28,6 @@ public class FileUtils {
     private static final String CAMERA_DIR = "/dcim/";
 
 
-
     public static File getAlbumDir(Context context) {
         File storageDir = null;
 
@@ -55,7 +54,6 @@ public class FileUtils {
 
         return storageDir;
     }
-
 
     public static File createImageFile(Context context) throws IOException {
         // Create an image file name
