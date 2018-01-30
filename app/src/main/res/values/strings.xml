@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Bier Lijst</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Instellingen</string>
     <string name="add_beer_activity_label">Toevoegen</string>
-    <string name= "details_beer_activity_label">Details</string>
+    <string name="details_beer_activity_label">Details</string>
     <string name="modify_beer_activity_label">Modify</string>
 
     <string name="beer_name_label" translatable="true">Naam:</string>
@@ -27,5 +27,15 @@
     <string name="dialog_delete_content" translatable="true">Ben je zeker dat je dit bier wilt verwijderen?</string>
     <string name="dialog_delete_confirm_button" translatable="true">Ja</string>
     <string name="dialog_delete_ignore_button" translatable="true">Nee</string>
+
+    <!-- setting for ordering of the data -->
+    <string name="pref_label_order" translatable="true">Sorteer volgens</string>
+    <string name="pref_key_order" translatable="false">key_order</string>
+    <string name="pref_order_by_name_label" translatable="true">Naam</string>
+    <string name="pref_order_by_name_value" translatable="false">Name</string>
+    <string name="pref_order_by_percentage_label" translatable="true">Alcohol percentage</string>
+    <string name="pref_order_by_percentage_value" translatable="true">Alcohol_percentage</string>
+
+
 
 </resources>

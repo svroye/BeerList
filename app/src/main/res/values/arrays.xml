@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="pref_order_labels">
+        <item>@string/pref_order_by_name_label</item>
+        <item>@string/pref_order_by_percentage_label</item>
+    </array>
+
+    <array name="pref_order_values">
+        <item>@string/pref_order_by_name_value</item>
+        <item>@string/pref_order_by_percentage_value</item>
+    </array>
+</resources>

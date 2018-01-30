@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.steven.bierlijst.data.BeerListContract;
+import com.example.steven.bierlijst.data.FileUtils;
 
 public class DetailsBeerActivity extends AppCompatActivity
                 implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -89,7 +91,8 @@ public class DetailsBeerActivity extends AppCompatActivity
         // get the uri from the image. If it's null, no image was added and nothing needs to be done
         String stringUriFromImage = data.getString(INDEX_IMAGE_ID);
         if(stringUriFromImage != null){
-            beerImage.setImageURI(Uri.parse(stringUriFromImage));
+            Bitmap bitmap = FileUtils.getBitmapFromUri(Uri.parse(stringUriFromImage), this);
+            beerImage.setImageBitmap(bitmap);
         }
 
         rowId = data.getInt(INDEX_ID);

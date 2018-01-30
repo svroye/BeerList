@@ -276,13 +276,16 @@ public class AddBeerActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if( requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-
             mBitmap = FileUtils.getBitmapFromUri(mImageFromGalleryOrCamera, this);
-            mBeerImageView.setImageBitmap(mBitmap);
         } else if(requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
-            mImageFromGalleryOrCamera = data.getData();
+            if (data != null) {
+                mImageFromGalleryOrCamera = data.getData();
+                Log.i(TAG, "Uri: " + mImageFromGalleryOrCamera.toString());
+
+                mBitmap = FileUtils.getBitmapFromUri(mImageFromGalleryOrCamera, this);
+            }
         }
-        //mBeerImageView.setImageURI(mImageFromGalleryOrCamera);
+        mBeerImageView.setImageBitmap(mBitmap);
     }
 
     @Override
@@ -298,11 +301,13 @@ public class AddBeerActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         data.moveToFirst();
-        String name = data.getString(INDEX_NAME);
-        double alcoholPercentage = data.getDouble(INDEX_ALCOHOL_PERCENTAGE);
-
-        mNameEditText.setText(name);
-        mPercentageEditText.setText(Double.toString(alcoholPercentage));
+        mNameEditText.setText(data.getString(INDEX_NAME));
+        mPercentageEditText.setText(Double.toString(data.getDouble(INDEX_ALCOHOL_PERCENTAGE)));
+        String uri = data.getString(INDEX_IMAGE_ID);
+        if(uri != null){
+            Bitmap bitmap = FileUtils.getBitmapFromUri(Uri.parse(uri), this);
+            mBeerImageView.setImageBitmap(bitmap);
+        }
     }
 
     @Override
