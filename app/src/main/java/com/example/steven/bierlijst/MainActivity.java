@@ -1,10 +1,12 @@
 package com.example.steven.bierlijst;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -13,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity
 
         emptyStateTextView = (TextView) findViewById(R.id.recyclerViewEmptyState);
 
+        // get reference to a database instance
         BeerListDbHelper dbHelper = new BeerListDbHelper(this);
         mDb = dbHelper.getWritableDatabase();
 
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity
         getSupportLoaderManager().initLoader(BEER_LOADER_ID, null, this);
     }
 
-    /*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -102,12 +107,12 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
         }
 
         return super.onOptionsItemSelected(item);
     }
-    */
 
 
 
@@ -124,7 +129,9 @@ public class MainActivity extends AppCompatActivity
         switch (id){
             case BEER_LOADER_ID:
                 Uri uri = BeerListContract.BeerListEntry.CONTENT_URI;
-                String sortOrder = BeerListContract.BeerListEntry.COLUMN_NAME + " ASC";
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                String sortPreference = sp.getString(getString(R.string.pref_key_order), getString(R.string.pref_order_by_name_value));
+                String sortOrder = getSortOrderColumnName(sortPreference) + " ASC";
                 return new CursorLoader(this, uri, MAIN_PROJECTION, null, null, sortOrder);
             default:
                 throw new RuntimeException("Loader not implemented: " + BEER_LOADER_ID);
@@ -141,5 +148,14 @@ public class MainActivity extends AppCompatActivity
         mAdapter.swapCursor(null);
     }
 
+    public String getSortOrderColumnName(String sort){
+        String columnName = null;
+        if(sort.equals(getString(R.string.pref_order_by_name_value))){
+            columnName = BeerListContract.BeerListEntry.COLUMN_NAME;
+        } else if(sort.equals(getString(R.string.pref_order_by_percentage_value))){
+            columnName = BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE;
+        }
+        return columnName;
+    }
 
 }
