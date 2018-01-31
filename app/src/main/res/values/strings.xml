@@ -36,6 +36,10 @@
     <string name="pref_order_by_percentage_label" translatable="true">Alcohol percentage</string>
     <string name="pref_order_by_percentage_value" translatable="true">Alcohol_percentage</string>
 
+    <!-- text in the snackbar after adding a beer -->
+    <string name="snackbar_add_beer_successful" translatable="true">Bier toegevoegd!</string>
+    <string name="snackbar_ok_button" translatable="true">ok</string>
+
 
 
 </resources>

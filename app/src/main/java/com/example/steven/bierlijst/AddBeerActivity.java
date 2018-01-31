@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -25,6 +26,8 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.CheckBoxPreference;
+import android.support.v7.preference.Preference;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,7 +54,7 @@ import static android.os.Environment.DIRECTORY_PICTURES;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class AddBeerActivity extends AppCompatActivity
-                            implements LoaderManager.LoaderCallbacks<Cursor>{
+        implements LoaderManager.LoaderCallbacks<Cursor>{
 
     public static final String TAG = "AddBeerActivity";
 
@@ -200,7 +203,12 @@ public class AddBeerActivity extends AppCompatActivity
 
         Uri returnUri = resolver.insert(BeerListContract.BeerListEntry.CONTENT_URI, contentValues);
 
-        finish();
+        if(returnUri != null){
+            Intent returnIntent = new Intent();
+            setResult(RESULT_OK, returnIntent);
+            finish();
+        }
+
     }
 
     private void modifyBeer(){
@@ -384,5 +392,6 @@ public class AddBeerActivity extends AppCompatActivity
             // permissions this app might request
         }
     }
+
 
 }

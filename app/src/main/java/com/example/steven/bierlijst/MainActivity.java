@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -26,7 +27,8 @@ import com.example.steven.bierlijst.data.BeerListDbHelper;
 
 public class MainActivity extends AppCompatActivity
         implements BeerListAdapter.ListItemClickListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
 
     public static final String TAG = "MainActivity";
@@ -52,6 +54,10 @@ public class MainActivity extends AppCompatActivity
     public static final int INDEX_ID = 0;
     public static final int INDEX_NAME = 1;
 
+    public static final int REQUEST_CODE_ADD_BEER = 9756;
+
+    SharedPreferences mSharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,8 @@ public class MainActivity extends AppCompatActivity
         // get reference to a database instance
         BeerListDbHelper dbHelper = new BeerListDbHelper(this);
         mDb = dbHelper.getWritableDatabase();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         // find a reference to the recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewBeerList);
@@ -81,9 +89,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 Intent intentToAddBeer = new Intent(MainActivity.this, AddBeerActivity.class);
-                startActivity(intentToAddBeer);
+                startActivityForResult(intentToAddBeer, REQUEST_CODE_ADD_BEER);
             }
         });
 
@@ -129,9 +136,10 @@ public class MainActivity extends AppCompatActivity
         switch (id){
             case BEER_LOADER_ID:
                 Uri uri = BeerListContract.BeerListEntry.CONTENT_URI;
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-                String sortPreference = sp.getString(getString(R.string.pref_key_order), getString(R.string.pref_order_by_name_value));
-                String sortOrder = getSortOrderColumnName(sortPreference) + " ASC";
+                String sortPreference = getSortOrderColumnName(mSharedPreferences.getString(
+                        getString(R.string.pref_key_order), getString(R.string.pref_order_by_name_value)));
+                Log.d(TAG, "Sorting according to: " + sortPreference);
+                String sortOrder = sortPreference + " ASC";
                 return new CursorLoader(this, uri, MAIN_PROJECTION, null, null, sortOrder);
             default:
                 throw new RuntimeException("Loader not implemented: " + BEER_LOADER_ID);
@@ -156,6 +164,44 @@ public class MainActivity extends AppCompatActivity
             columnName = BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE;
         }
         return columnName;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode){
+            case RESULT_OK:
+                showItemAddedSnackBar();
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void showItemAddedSnackBar(){
+        final Snackbar snackBar = Snackbar.make(mRecyclerView, getString(R.string.snackbar_add_beer_successful),
+                Snackbar.LENGTH_LONG);
+        snackBar.setAction(getString(R.string.snackbar_ok_button), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackBar.dismiss();
+                        Log.d(TAG, "Snackbar closed!!");
+                    }
+                });
+        snackBar.show();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.d(TAG, "onSharedPreferenceChanged is triggered!!!");
+        if(key.equals(getString(R.string.pref_key_order))){
+            Log.d(TAG, "Ordering method is changed !");
+            getSupportLoaderManager().restartLoader(BEER_LOADER_ID, null, this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
 }
