@@ -58,7 +58,8 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerVi
         if (!mCursor.moveToPosition(position)) return;
         // getting the name from the current row
         String name = mCursor.getString(mCursor.getColumnIndex(BeerListContract.BeerListEntry.COLUMN_NAME));
-        holder.bind(name);
+        double percentage = mCursor.getDouble(mCursor.getColumnIndex(BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE));
+        holder.bind(name, percentage);
     }
 
     @Override
@@ -80,16 +81,19 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerVi
     public class BeerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
 
         TextView mBeerNameTextView;
+        TextView mAlcoholPercentageTextView;
         int id;
 
         public BeerViewHolder(View itemView) {
             super(itemView);
             mBeerNameTextView = itemView.findViewById(R.id.textViewBeerName);
+            mAlcoholPercentageTextView = itemView.findViewById(R.id.textViewAlcoholPercentage);
             itemView.setOnClickListener(this);
         }
 
-        public void bind(String name){
+        public void bind(String name, double percentage){
             mBeerNameTextView.setText(name);
+            mAlcoholPercentageTextView.setText(Double.toString(percentage) + "%");
         }
 
         @Override

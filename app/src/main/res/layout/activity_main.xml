@@ -34,6 +34,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
         app:layout_anchorGravity="bottom|right|end"/>
     <!--app:layout_anchor="@id/recyclerViewBeerList"-->
 

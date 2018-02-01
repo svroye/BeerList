@@ -9,12 +9,26 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.steven.bierlijst.MainActivity">
 
-    <TextView
-        android:padding="16dp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Westmalle Tripel"
-        android:id="@+id/textViewBeerName"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:padding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="10.0%"
+            android:id="@+id/textViewAlcoholPercentage"/>
+
+        <TextView
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Westmalle Tripel"
+            android:id="@+id/textViewBeerName"/>
+    </LinearLayout>
+
 
     <View
         android:layout_width="match_parent"

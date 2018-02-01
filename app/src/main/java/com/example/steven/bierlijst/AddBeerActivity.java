@@ -172,6 +172,11 @@ public class AddBeerActivity extends AppCompatActivity
         startActivityForResult(Intent.createChooser(intentToOpenGallery, "Select Picture"), REQUEST_GALLERY);
     }
 
+    /*
+    adds a beer to the database
+    gets triggered when the activity is opened for adding a beer and the
+    confirm button is clicked
+     */
     private void addBeer(){
         ContentValues contentValues = new ContentValues();
 
@@ -211,6 +216,11 @@ public class AddBeerActivity extends AppCompatActivity
 
     }
 
+    /*
+    modifies a beer and updates the database
+    gets triggered when activity is opened for modifying a beer and the
+    confirm button is clicked
+     */
     private void modifyBeer(){
         ContentValues contentValues = new ContentValues();
 
@@ -243,6 +253,9 @@ public class AddBeerActivity extends AppCompatActivity
         ContentResolver resolver = getContentResolver();
 
         resolver.update(mUriThatStartedActivity, contentValues, null, null);
+
+        Intent returnIntent = new Intent();
+        setResult(RESULT_OK, returnIntent);
         finish();
     }
 

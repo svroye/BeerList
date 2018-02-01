@@ -38,7 +38,13 @@
 
     <!-- text in the snackbar after adding a beer -->
     <string name="snackbar_add_beer_successful" translatable="true">Bier toegevoegd!</string>
+    <string name="snackbar_delete_beer_successful" translatable="true">Bier verwijderd!</string>
+    <string name="snackbar_modify_beer_successful" translatable="true">Bier gewijzigd!</string>
     <string name="snackbar_ok_button" translatable="true">ok</string>
+
+
+    <!-- flags used to indicate which action is performed -->
+    <string name="flag_delete_beer" translatable="true">deleteBeerFlag</string>
 
 
 

@@ -49,12 +49,15 @@ public class MainActivity extends AppCompatActivity
     public static final String[] MAIN_PROJECTION = {
             BeerListContract.BeerListEntry._ID,
             BeerListContract.BeerListEntry.COLUMN_NAME,
+            BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE
     };
 
     public static final int INDEX_ID = 0;
     public static final int INDEX_NAME = 1;
+    public static final int INDEX_ALCOHOL_PERCENTAGE = 1;
 
-    public static final int REQUEST_CODE_ADD_BEER = 9756;
+    public static final int ADD_BEER_INTENT_CODE = 9756;
+    public static final int VIEW_MODIFY_DELETE_BEER_INTENT_CODE = 9757;
 
     SharedPreferences mSharedPreferences;
 
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intentToAddBeer = new Intent(MainActivity.this, AddBeerActivity.class);
-                startActivityForResult(intentToAddBeer, REQUEST_CODE_ADD_BEER);
+                startActivityForResult(intentToAddBeer, ADD_BEER_INTENT_CODE);
             }
         });
 
@@ -128,7 +131,7 @@ public class MainActivity extends AppCompatActivity
         Intent intentToDetailsActivity = new Intent(this, DetailsBeerActivity.class);
         Uri uriWithId = BeerListContract.BeerListEntry.getUriWithAppendedId(clickedItemId);
         intentToDetailsActivity.setData(uriWithId);
-        startActivity(intentToDetailsActivity);
+        startActivityForResult(intentToDetailsActivity, VIEW_MODIFY_DELETE_BEER_INTENT_CODE);
     }
 
     @Override
@@ -138,8 +141,7 @@ public class MainActivity extends AppCompatActivity
                 Uri uri = BeerListContract.BeerListEntry.CONTENT_URI;
                 String sortPreference = getSortOrderColumnName(mSharedPreferences.getString(
                         getString(R.string.pref_key_order), getString(R.string.pref_order_by_name_value)));
-                Log.d(TAG, "Sorting according to: " + sortPreference);
-                String sortOrder = sortPreference + " ASC";
+                String sortOrder = sortPreference + " COLLATE NOCASE ASC";
                 return new CursorLoader(this, uri, MAIN_PROJECTION, null, null, sortOrder);
             default:
                 throw new RuntimeException("Loader not implemented: " + BEER_LOADER_ID);
@@ -168,27 +170,40 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode){
-            case RESULT_OK:
-                showItemAddedSnackBar();
+        switch (requestCode){
+            case ADD_BEER_INTENT_CODE:
+                if(resultCode == RESULT_OK) showSnackBar(getString(R.string.snackbar_add_beer_successful));
+                break;
+            case VIEW_MODIFY_DELETE_BEER_INTENT_CODE:
+                if(resultCode == RESULT_OK){
+                    boolean isBeerDeleted = data.getBooleanExtra(getString(R.string.flag_delete_beer), false);
+                    Log.d(TAG, "BEER DELETED " + isBeerDeleted);
+                    if (isBeerDeleted) showSnackBar(getString(R.string.snackbar_delete_beer_successful));
+                }
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void showItemAddedSnackBar(){
-        final Snackbar snackBar = Snackbar.make(mRecyclerView, getString(R.string.snackbar_add_beer_successful),
+    /*
+    showing a Snackbar at the bottom of the page
+     */
+    public void showSnackBar(String action){
+        final Snackbar snackBar = Snackbar.make(mRecyclerView, action,
                 Snackbar.LENGTH_LONG);
         snackBar.setAction(getString(R.string.snackbar_ok_button), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         snackBar.dismiss();
-                        Log.d(TAG, "Snackbar closed!!");
                     }
                 });
         snackBar.show();
     }
 
+    /*
+    When the user changes the way of sorting the list in the settings activity,
+    we need to restart the loader in order to refresh the page and show the new ordering
+     */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Log.d(TAG, "onSharedPreferenceChanged is triggered!!!");

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +44,8 @@ public class DetailsBeerActivity extends AppCompatActivity
     public static final int INDEX_NAME = 1;
     public static final int INDEX_ALCOHOL_PERCENTAGE = 2;
     public static final int INDEX_IMAGE_ID = 3;
+
+    public static final int MODIFY_BEER_INTENT_CODE = 4721;
 
     private int rowId;
 
@@ -120,7 +124,7 @@ public class DetailsBeerActivity extends AppCompatActivity
                 Uri uri = BeerListContract.BeerListEntry.getUriWithAppendedId(rowId);
                 Intent intentToStartModifyBeer = new Intent(this, AddBeerActivity.class);
                 intentToStartModifyBeer.setData(uri);
-                startActivity(intentToStartModifyBeer);
+                startActivityForResult(intentToStartModifyBeer, MODIFY_BEER_INTENT_CODE);
                 break;
         }
 
@@ -139,6 +143,9 @@ public class DetailsBeerActivity extends AppCompatActivity
             public void onClick(DialogInterface dialogInterface, int i) {
                 Uri uri = BeerListContract.BeerListEntry.getUriWithAppendedId(rowId);
                 getContentResolver().delete(uri, null, null);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(getString(R.string.flag_delete_beer), true);
+                setResult(RESULT_OK, returnIntent);
                 finish();
             }
         });
@@ -150,5 +157,28 @@ public class DetailsBeerActivity extends AppCompatActivity
         });
 
         builder.create().show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == MODIFY_BEER_INTENT_CODE){
+            if(resultCode == RESULT_OK) showSnackBar(getString(R.string.snackbar_modify_beer_successful));
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /*
+    showing a Snackbar at the bottom of the page
+     */
+    public void showSnackBar(String action){
+        final Snackbar snackBar = Snackbar.make(beerNameTextView, action,
+                Snackbar.LENGTH_LONG);
+        snackBar.setAction(getString(R.string.snackbar_ok_button), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackBar.dismiss();
+            }
+        });
+        snackBar.show();
     }
 }
