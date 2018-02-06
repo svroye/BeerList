@@ -34,6 +34,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.example.steven.bierlijst.data.BeerListContract;
@@ -65,6 +66,7 @@ public class AddBeerActivity extends AppCompatActivity
     Button mGalleryButton;
     Button mCameraButton;
     ImageView mBeerImageView;
+    RatingBar mRatingBar;
 
     private Bitmap mBitmap;
 
@@ -90,13 +92,15 @@ public class AddBeerActivity extends AppCompatActivity
             BeerListContract.BeerListEntry._ID,
             BeerListContract.BeerListEntry.COLUMN_NAME,
             BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE,
-            BeerListContract.BeerListEntry.COLUMN_IMAGE_ID
+            BeerListContract.BeerListEntry.COLUMN_IMAGE_ID,
+            BeerListContract.BeerListEntry.COLUMN_RATING
     };
 
     public static final int INDEX_ID = 0;
     public static final int INDEX_NAME = 1;
     public static final int INDEX_ALCOHOL_PERCENTAGE = 2;
     public static final int INDEX_IMAGE_ID = 3;
+    public static final int INDEX_RATING = 4;
 
     private boolean modifyBeer = false;
 
@@ -115,6 +119,7 @@ public class AddBeerActivity extends AppCompatActivity
         mGalleryButton = (Button) findViewById(R.id.galleryButton);
         mCameraButton = (Button) findViewById(R.id.cameraButton);
         mBeerImageView = (ImageView) findViewById(R.id.beerImage);
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
 
         if (mUriThatStartedActivity != null){
             modifyBeer = true;
@@ -189,7 +194,7 @@ public class AddBeerActivity extends AppCompatActivity
         if (percentageString.length() == 0) return;
 
         // parse the string to a double
-        Double percentage;
+        double percentage;
         try {
             percentage = Double.parseDouble(percentageString);
         } catch (NullPointerException e){
@@ -197,12 +202,16 @@ public class AddBeerActivity extends AppCompatActivity
         } catch (NumberFormatException e){
             return;
         }
+        float rating = mRatingBar.getRating();
 
         contentValues.put(BeerListContract.BeerListEntry.COLUMN_NAME, name);
         contentValues.put(BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE, percentage);
+        contentValues.put(BeerListContract.BeerListEntry.COLUMN_RATING, rating);
+
         if (mImageFromGalleryOrCamera != null){
             contentValues.put(BeerListContract.BeerListEntry.COLUMN_IMAGE_ID, mImageFromGalleryOrCamera.toString());
         }
+
 
         ContentResolver resolver = getContentResolver();
 
@@ -232,7 +241,7 @@ public class AddBeerActivity extends AppCompatActivity
         String percentageString = mPercentageEditText.getText().toString();
         if (percentageString.length() == 0) return;
 
-        Double percentage;
+        double percentage;
 
         try {
             percentage = Double.parseDouble(percentageString);
@@ -242,9 +251,11 @@ public class AddBeerActivity extends AppCompatActivity
             return;
         }
 
+        float rating = mRatingBar.getRating();
 
         contentValues.put(BeerListContract.BeerListEntry.COLUMN_NAME, name);
         contentValues.put(BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE, percentage);
+        contentValues.put(BeerListContract.BeerListEntry.COLUMN_RATING, rating);
 
         if (mImageFromGalleryOrCamera != null){
             contentValues.put(BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE, mImageFromGalleryOrCamera.toString());
@@ -329,6 +340,7 @@ public class AddBeerActivity extends AppCompatActivity
             Bitmap bitmap = FileUtils.getBitmapFromUri(Uri.parse(uri), this);
             mBeerImageView.setImageBitmap(bitmap);
         }
+        mRatingBar.setRating(data.getFloat(INDEX_RATING));
     }
 
     @Override

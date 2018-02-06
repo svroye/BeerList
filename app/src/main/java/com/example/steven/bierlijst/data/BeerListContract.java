@@ -24,6 +24,7 @@ public class BeerListContract {
         public static final String COLUMN_NAME = "beerName";
         public static final String COLUMN_ALCOHOL_PERCENTAGE = "percentage";
         public static final String COLUMN_IMAGE_ID = "picture";
+        public static final String COLUMN_RATING = "rating";
 
         public static Uri getUriWithAppendedId(int id){
             return CONTENT_URI.buildUpon().appendPath(Integer.toString(id)).build();

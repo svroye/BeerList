@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.steven.bierlijst.data.BeerListContract;
@@ -37,13 +38,15 @@ public class DetailsBeerActivity extends AppCompatActivity
             BeerListContract.BeerListEntry._ID,
             BeerListContract.BeerListEntry.COLUMN_NAME,
             BeerListContract.BeerListEntry.COLUMN_ALCOHOL_PERCENTAGE,
-            BeerListContract.BeerListEntry.COLUMN_IMAGE_ID
+            BeerListContract.BeerListEntry.COLUMN_IMAGE_ID,
+            BeerListContract.BeerListEntry.COLUMN_RATING
     };
 
     public static final int INDEX_ID = 0;
     public static final int INDEX_NAME = 1;
     public static final int INDEX_ALCOHOL_PERCENTAGE = 2;
     public static final int INDEX_IMAGE_ID = 3;
+    public static final int INDEX_RATING = 4;
 
     public static final int MODIFY_BEER_INTENT_CODE = 4721;
 
@@ -52,6 +55,7 @@ public class DetailsBeerActivity extends AppCompatActivity
     private TextView beerNameTextView;
     private TextView beerAlcoholPercentage;
     private ImageView beerImage;
+    private RatingBar beerRatingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class DetailsBeerActivity extends AppCompatActivity
         beerNameTextView = (TextView) findViewById(R.id.detailsBeerNameValue);
         beerAlcoholPercentage = (TextView) findViewById(R.id.detailsBeerPercentageValue);
         beerImage = (ImageView) findViewById(R.id.detailsBeerImage);
+        beerRatingBar = (RatingBar) findViewById(R.id.detailsRatingBar);
 
         uriFromIntent = getIntent().getData();
         if (uriFromIntent == null) throw new NullPointerException("Uri cannot be null!");
@@ -97,6 +102,14 @@ public class DetailsBeerActivity extends AppCompatActivity
         if(stringUriFromImage != null){
             Bitmap bitmap = FileUtils.getBitmapFromUri(Uri.parse(stringUriFromImage), this);
             beerImage.setImageBitmap(bitmap);
+        }
+
+        float beerRating = data.getFloat(INDEX_RATING);
+        if(beerRating != 0.0) {
+            beerRatingBar.setRating(beerRating);
+        } else {
+            Log.e(TAG, "No rating available!");
+            beerRatingBar.setRating((float) 0.0);
         }
 
         rowId = data.getInt(INDEX_ID);

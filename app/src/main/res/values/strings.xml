@@ -6,9 +6,10 @@
     <string name="modify_beer_activity_label">Modify</string>
 
     <string name="beer_name_label" translatable="true">Naam:</string>
-    <string name="beer_name_hint" translatable="false">Westmalle Tripel</string>
+    <string name="beer_name_hint" translatable="false">e.g. Westmalle Tripel</string>
     <string name="alcohol_percentage_label" translatable="true">Percentage:</string>
-    <string name="alcohol_percentage_hint" translatable="false">9.0</string>
+    <string name="alcohol_percentage_hint" translatable="false">e.g. 9.0</string>
+    <string name="beer_rating_label" translatable="true">Score:</string>
     <string name="beer_image_label" translatable="true">Foto:</string>
     <string name="button_gallery" translatable="true">Kies uit gallerij</string>
     <string name="button_camera" translatable="true">Neem foto</string>

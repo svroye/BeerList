@@ -1,58 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="16dp"
-    android:orientation="vertical"
+
+<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/detailsBeerNameLabel"
+    <LinearLayout
+        android:layout_margin="16dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/beer_name_label"
-        android:textColor="@android:color/black"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/detailsBeerNameValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/beer_name_hint"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:inputType="text"/>
+        <TextView
+            android:id="@+id/detailsBeerNameLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/beer_name_label"
+            android:textColor="@android:color/darker_gray"/>
 
-    <TextView
-        android:id="@+id/detailsBeerPercentageLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/alcohol_percentage_label"
-        android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/detailsBeerNameValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/beer_name_hint"
+            android:textSize="24sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/black"
+            android:inputType="text"/>
 
-    <TextView
-        android:id="@+id/detailsBeerPercentageValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:hint="@string/alcohol_percentage_hint"
-        android:inputType="numberDecimal"
-        android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/detailsBeerPercentageLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/alcohol_percentage_label"
+            android:textColor="@android:color/darker_gray"/>
 
-    <TextView
-        android:id="@+id/detailsBeerImageLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/beer_image_label"
-        android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/detailsBeerPercentageValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/alcohol_percentage_hint"
+            android:inputType="numberDecimal"
+            android:textColor="@android:color/black"/>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/detailsBeerImage"/>
+        <TextView
+            android:id="@+id/detailsRatingBarLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/beer_rating_label"
+            android:textColor="@android:color/darker_gray"/>
 
+        <RatingBar
+            android:id="@+id/detailsRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:numStars="5"
+            android:isIndicator="true"
+            android:stepSize="0.5"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/detailsBeerImageLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/beer_image_label"
+            android:textColor="@android:color/darker_gray"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/detailsBeerImage"/>
+
+    </LinearLayout>
+</ScrollView>

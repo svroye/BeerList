@@ -15,7 +15,7 @@ public class BeerListDbHelper extends SQLiteOpenHelper {
     public static final String TAG = "BeerListDbHelper";
 
     static final String DATABASE_NAME = "beerlist.db";
-    static final int DATABASE_VERSION = 2;
+    static final int DATABASE_VERSION = 4;
 
     public BeerListDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,12 +35,9 @@ public class BeerListDbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        Log.d(TAG, "Upgrading Database version");
-        String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS "
-                + BeerListContract.BeerListEntry.TABLE_NAME + ";";
-
-        sqLiteDatabase.execSQL(SQL_DELETE_TABLE);
-        onCreate(sqLiteDatabase);
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        String SQL_UPGRADE_TABLE = "ALTER TABLE " + BeerListContract.BeerListEntry.TABLE_NAME
+                + " ADD COLUMN " + BeerListContract.BeerListEntry.COLUMN_RATING + " REAL;";
+        sqLiteDatabase.execSQL(SQL_UPGRADE_TABLE);
     }
 }
